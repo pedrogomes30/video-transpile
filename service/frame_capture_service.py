@@ -6,7 +6,7 @@ def extract_timestamps_from_blog(blog_text):
     timestamps = []
     matches = re.findall(r"\[(\d+\.\d+) - (\d+\.\d+)\]", blog_text)
     for match in matches:
-        timestamps.append(float(match[0]))  # Pega o tempo inicial
+        timestamps.append(float(match[0]))
     return timestamps
 
 def capture_frames_by_timestamps(video_path, timestamps, output_dir):
