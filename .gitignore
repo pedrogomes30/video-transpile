@@ -1,3 +1,5 @@
 /build
 /dist
 /transpile
+/output/*
+!/output/.gitkeep

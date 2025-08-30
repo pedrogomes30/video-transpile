@@ -4,7 +4,7 @@
 a = Analysis(
     ['app.py'],
     pathex=[],
-    binaries=[],
+    binaries=[('C:\\workspace\\lab\\video-transpile\\transpile\\lib\\site-packages\\torch\\lib\\*.dll', 'torch/lib')],
     datas=[('C:\\workspace\\lab\\video-transpile\\transpile\\lib\\site-packages\\whisper\\assets', 'whisper/assets')],
     hiddenimports=[],
     hookspath=[],
