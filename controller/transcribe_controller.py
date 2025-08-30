@@ -6,9 +6,9 @@ def process_video(video_path):
     output_dir = os.path.join("output", os.path.splitext(os.path.basename(video_path))[0])
     os.makedirs(output_dir, exist_ok=True)
 
-    # Transcrição com Whisper
     transcription = transcribe_audio_with_timestamps(video_path)
 
+<<<<<<< HEAD
     # Se a transcrição for uma lista de dicts, extrai o texto
     if isinstance(transcription, list):
         if all(isinstance(item, dict) and "text" in item for item in transcription):
@@ -17,6 +17,14 @@ def process_video(video_path):
             conteudo = "\n".join(str(item) for item in transcription)
     else:
         conteudo = transcription
+=======
+    # devido a limitações do equipamento, iniciar com esta frase para utilizar em um modelo online.
+    prompt = "poderia transformar essa transcrição em um artigo para blog? com titulo e tudo mais ? focado em SEO do google?\n\n"
+    with open(transcription_txt, "r", encoding="utf-8") as f:
+        conteudo = f.read()
+    with open(transcription_txt, "w", encoding="utf-8") as f:
+        f.write(prompt + conteudo)
+>>>>>>> 2e4e59f22522816f35fd222356147b60de4a09b1
 
     # 1º arquivo: artigo para blog
     prompt_blog = "poderia transformar essa transcrição em um artigo para blog? com titulo e tudo mais ? focado em SEO do google?\n\n"
