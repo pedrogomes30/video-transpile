@@ -11,6 +11,11 @@
 # PyInstaller files
 *.spec
 
+# FFmpeg binary (baixado automaticamente durante build)
+assets/ffmpeg/ffmpeg.exe
+assets/ffmpeg/*.zip
+assets/ffmpeg/ffmpeg-*/
+
 # Python cache
 __pycache__/
 *.py[cod]

@@ -78,18 +78,22 @@ def setup_ffmpeg():
             except:
                 continue
     
-    # Se não encontrou, tentar configurar
-    print("⚠️ FFmpeg não encontrado - tentando configurar...")
+    # Se não encontrou, tentar baixar automaticamente
+    print("⚠️ FFmpeg não encontrado - fazendo download automático...")
     
     try:
         # Executar o configurador
         from assets.ffmpeg_setup import setup_ffmpeg_for_build
         ffmpeg_path = setup_ffmpeg_for_build()
         if ffmpeg_path:
-            print(f"✅ FFmpeg configurado: {ffmpeg_path}")
+            print(f"✅ FFmpeg baixado e configurado: {ffmpeg_path}")
             return True
     except Exception as e:
-        print(f"❌ Erro ao configurar FFmpeg: {e}")
+        print(f"❌ Erro ao baixar FFmpeg: {e}")
+        print("💡 Soluções:")
+        print("   1. Execute: python assets/ffmpeg_setup.py")
+        print("   2. Instale FFmpeg no sistema")
+        print("   3. Copie ffmpeg.exe para assets/ffmpeg/")
     
     print("❌ FFmpeg não disponível - aplicação pode falhar em sistemas sem FFmpeg")
     return False
