@@ -1,0 +1,89 @@
+{
+  "build_profiles": {
+    "development": {
+      "description": "Build para desenvolvimento e testes",
+      "build_type": "onedir",
+      "debug": true,
+      "optimize": false,
+      "include_models": false,
+      "test": true
+    },
+    "production": {
+      "description": "Build otimizado para distribuição",
+      "build_type": "onefile",
+      "debug": false,
+      "optimize": true,
+      "include_models": false,
+      "test": true
+    },
+    "complete": {
+      "description": "Build completo com modelos incluídos",
+      "build_type": "onefile",
+      "debug": false,
+      "optimize": true,
+      "include_models": true,
+      "test": false
+    },
+    "portable": {
+      "description": "Build portátil sem otimizações",
+      "build_type": "onedir",
+      "debug": false,
+      "optimize": false,
+      "include_models": true,
+      "test": true
+    }
+  },
+  "targets": {
+    "windows": {
+      "description": "Build para Windows 10/11",
+      "console": false,
+      "icon": "assets/icon.ico"
+    },
+    "linux": {
+      "description": "Build para distribuições Linux",
+      "console": false,
+      "icon": "assets/icon.png"
+    },
+    "macos": {
+      "description": "Build para macOS",
+      "console": false,
+      "icon": "assets/icon.icns"
+    }
+  },
+  "optimization": {
+    "exclude_packages": [
+      "matplotlib",
+      "scipy",
+      "pandas",
+      "jupyter",
+      "IPython",
+      "notebook",
+      "qtconsole",
+      "spyder",
+      "anaconda",
+      "conda",
+      "setuptools",
+      "pip",
+      "wheel",
+      "twine"
+    ],
+    "upx_exclude": [
+      "vcruntime140.dll",
+      "python38.dll",
+      "Qt5Core.dll",
+      "Qt5Gui.dll",
+      "Qt5Widgets.dll"
+    ]
+  },
+  "assets": {
+    "whisper_required": [
+      "mel_filters.npz",
+      "gpt2.tiktoken",
+      "multilingual.tiktoken"
+    ],
+    "additional_files": [
+      "README.md",
+      "LICENSE"
+    ]
+  }
+}

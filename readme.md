@@ -1,179 +1,237 @@
-# Video Transcriber (Whisper)
+# VideoTranscriber
 
-Este projeto é um transcritor de vídeo para texto utilizando a biblioteca [Whisper](https://github.com/openai/whisper) da OpenAI em ambiente local. Possui uma interface gráfica simples feita com Tkinter que permite selecionar vídeos, transcrever automaticamente e salvar o resultado em formato de texto com timestamps, otimizado para criação de artigos de blog com foco em SEO.
+Sistema de transcrição de vídeos usando OpenAI Whisper com interface gráfica e sistema de build automatizado.
 
-## 🎯 Objetivo
+## 🎥 Funcionalidades
 
-Transpilar (transcrever) vídeos em textos com formatos pré-definidos, facilitando a criação de conteúdo escrito a partir de material audiovisual.
+- **Transcrição Inteligente**: Usa OpenAI Whisper para transcrição precisa em português
+- **Suporte GPU/CPU**: Detecção automática de CUDA com fallback para CPU
+- **Interface Moderna**: GUI intuitiva com logging em tempo real e barra de progresso
+- **Segmentação Automática**: Processa vídeos grandes em segmentos para otimizar memória
+- **Build Automatizado**: Scripts para criar executáveis multiplataforma
+- **Otimização Avançada**: Diferentes perfis de build para desenvolvimento e produção
 
-## ✨ Funcionalidades
+## 🚀 Início Rápido
 
-- 🎬 Transcrição automática de vídeos (.mp4, .mov, .avi, .mkv) para texto com timestamps
-- 🖥️ Interface gráfica intuitiva usando Tkinter
-- 📝 Geração de arquivo `.txt` com prompt automático para criação de artigo de blog
-- 🎯 Preparação para integração com modelos de IA online
-- ⏱️ Timestamps precisos para cada segmento de fala
-- 🇧🇷 Transcrição otimizada para português
-- 📁 Organização automática dos arquivos de saída
+### Usando o Executável (Recomendado)
+1. Baixe o executável da seção Releases
+2. Execute `VideoTranscriber.exe` (Windows) ou o equivalente para seu OS
+3. Selecione um arquivo de vídeo e clique em "Transcrever"
 
-## 📋 Pré-requisitos
+### Executando o Código Fonte
 
-- Python 3.8 ou superior
-- Sistema operacional: Windows, macOS ou Linux
-- Pelo menos 4GB de RAM disponível
-- Conexão com internet para download inicial do modelo Whisper
+**Pré-requisitos:**
+- Python 3.8+
+- FFmpeg instalado e no PATH
+- GPU compatível com CUDA (opcional)
 
-## 🚀 Instalação
-
-### 1. Clone o repositório
+**Instalação:**
 ```bash
-git clone https://github.com/pedrogomes30/video-transpile.git
+# Clone o repositório
+git clone [repository-url]
 cd video-transpile
-```
 
-### 2. Crie um ambiente virtual (recomendado)
-```bash
-# Linux/macOS
-python3 -m venv venv
-source venv/bin/activate
+# Crie um ambiente virtual
+python -m venv transpile
+# Windows:
+transpile\Scripts\activate
+# Linux/macOS:
+source transpile/bin/activate
 
-# Windows
-python -m venv venv
-venv\Scripts\activate
-```
-
-### 3. Instale as dependências
-```bash
+# Instale dependências
 pip install -r requirements.txt
-```
 
-### 4. Verificação da instalação
-```bash
-python -c "import whisper; print('Whisper instalado com sucesso!')"
-```
-
-## 🎮 Como usar
-
-### Execução do aplicativo
-```bash
+# Execute
 python app.py
 ```
 
-### Passo a passo na interface:
-1. **Selecionar vídeo**: Clique em "Selecionar vídeo" e escolha seu arquivo
-2. **Iniciar transcrição**: Clique em "Transcrever vídeo" e aguarde o processamento
-3. **Resultado**: O arquivo será salvo na pasta `output/[nome-do-video]/transcription.txt`
+## 🔨 Build de Executáveis
 
-### Estrutura dos arquivos de saída:
-```
-output/
-└── nome-do-video/
-    └── transcription.txt    # Transcrição com timestamps e prompt para blog
-```
+### Método Simples (Recomendado)
 
-### Formato da transcrição:
-```
-poderia transformar essa transcrição em um artigo para blog? com titulo e tudo mais ? focado em SEO do google?
-
-[0.00 - 5.32] Texto do primeiro segmento
-[5.32 - 12.45] Texto do segundo segmento
-...
-```
-
-## 🏗️ Build do executável
-
-### Instalação do PyInstaller
+**Windows:**
 ```bash
-pip install pyinstaller
+# Build de produção
+build_quick.bat production
+
+# Build de desenvolvimento
+build_quick.bat development
+
+# Build completo com modelos
+build_quick.bat complete
 ```
 
-### Gerar executável
+**Linux/macOS:**
 ```bash
-pyinstaller app.spec
+chmod +x build_quick.sh
+
+# Build de produção
+./build_quick.sh production
+
+# Build de desenvolvimento  
+./build_quick.sh development
+
+# Build completo com modelos
+./build_quick.sh complete
 ```
 
-O executável será criado na pasta `dist/` e incluirá automaticamente os assets necessários do Whisper.
+### Método Avançado
 
-### Para gerar um novo spec file (se necessário):
+**Script Python Multiplataforma:**
 ```bash
-pyinstaller --onefile --windowed --add-data "caminho/para/whisper/assets:whisper/assets" app.py
+# Build básico
+python build.py
+
+# Build otimizado para Windows
+python build.py --target-os windows --optimize --test
+
+# Build com modelos incluídos
+python build.py --include-models --build-type onedir
+
+# Build de debug
+python build.py --debug --build-type onedir --test
+
+# Limpar e rebuildar
+python build.py --clean --optimize
 ```
 
-## 📁 Estrutura do projeto
+**Opções do build.py:**
+- `--target-os {windows,linux,macos,auto}`: Sistema alvo
+- `--build-type {onefile,onedir}`: Tipo de build
+- `--include-models`: Incluir modelos Whisper cached
+- `--optimize`: Ativar otimizações (menor tamanho)
+- `--debug`: Modo debug com console
+- `--clean`: Limpar diretórios de build
+- `--test`: Testar executável após build
+
+### Perfis de Build
+
+| Perfil | Tipo | Debug | Otimizado | Modelos | Uso |
+|--------|------|-------|-----------|---------|-----|
+| `development` | onedir | ✅ | ❌ | ❌ | Desenvolvimento e testes |
+| `production` | onefile | ❌ | ✅ | ❌ | Distribuição padrão |
+| `complete` | onefile | ❌ | ✅ | ✅ | Distribuição completa |
+| `portable` | onedir | ❌ | ❌ | ✅ | Versão portátil |
+
+## 📋 Dependências Principais
+
+- **openai-whisper** (20231117): Engine de transcrição
+- **torch** (1.13.1+cu117): PyTorch com CUDA 11.7
+- **tkinter**: Interface gráfica
+- **ffmpeg-python**: Processamento de vídeo
+- **pyinstaller**: Criação de executáveis
+
+## 🔧 Configuração de GPU
+
+### NVIDIA CUDA
+```bash
+# Verificar compatibilidade
+nvidia-smi
+
+# Instalar PyTorch com CUDA (já incluído em requirements.txt)
+pip install torch==1.13.1+cu117 -f https://download.pytorch.org/whl/torch_stable.html
+```
+
+### Teste de GPU
+O aplicativo detecta automaticamente a GPU e mostra um diálogo de confirmação.
+
+## 📁 Estrutura do Projeto
 
 ```
 video-transpile/
-├── app.py                          # Ponto de entrada da aplicação
-├── app.spec                        # Configuração do PyInstaller
-├── requirements.txt                 # Dependências do projeto
-├── readme.md                       # Documentação
-├── controller/                     # Controladores
-│   └── transcribe_controller.py    # Lógica de controle da transcrição
-├── service/                        # Serviços
-│   ├── whisper_service.py          # Serviço de transcrição com Whisper
-│   └── frame_capture_service.py    # Serviço de captura de frames (futuro)
-├── view/                          # Interface gráfica
-│   └── main_view.py               # Interface principal
-└── output/                        # Pasta de saída (criada automaticamente)
+├── app.py                 # Aplicativo principal
+├── build.py              # Script de build avançado
+├── build_quick.bat       # Build wrapper (Windows)
+├── build_quick.sh        # Build wrapper (Unix)
+├── build_config.json     # Configurações de build
+├── requirements.txt      # Dependências Python
+├── controller/           # Lógica de negócio
+│   └── transcribe_controller.py
+├── service/             # Serviços
+│   ├── whisper_service.py
+│   └── frame_capture_service.py
+├── view/               # Interface
+│   └── main_view.py
+├── output/            # Saída de transcrições
+├── dist/             # Executáveis gerados
+└── build/           # Arquivos temporários de build
 ```
 
-## 🔧 Dependências principais
+## � Solução de Problemas
 
-- **openai-whisper**: Motor de transcrição de IA
-- **moviepy**: Processamento de vídeo
-- **opencv-python**: Manipulação de imagens e vídeo
-- **tkinter**: Interface gráfica (incluído no Python)
-- **transformers**: Modelos de IA (dependência do Whisper)
-
-## ⚠️ Solução de problemas
-
-### Erro de modelo não encontrado
+### "mel_filters.npz not found"
 ```bash
-# O Whisper baixará automaticamente o modelo na primeira execução
-# Certifique-se de ter conexão com internet
+# Rebuildar com assets do Whisper
+python build.py --clean
 ```
 
-### Erro de dependências no Linux
+### Erro de GPU/CUDA
 ```bash
-sudo apt-get update
-sudo apt-get install python3-tk ffmpeg
+# Verificar instalação CUDA
+python -c "import torch; print(torch.cuda.is_available())"
+
+# Reinstalar PyTorch
+pip uninstall torch
+pip install torch==1.13.1+cu117 -f https://download.pytorch.org/whl/torch_stable.html
 ```
 
-### Erro de dependências no macOS
+### Executável muito grande
 ```bash
-brew install ffmpeg
+# Build otimizado
+python build.py --optimize --target-os windows
 ```
 
-### Problemas de memória
-- Use vídeos menores (< 1GB) para melhor performance
-- Feche outros programas durante a transcrição
-- O modelo "small" é usado por padrão para otimizar o uso de memória
+### Erro de FFmpeg
+```bash
+# Windows: Baixar FFmpeg e adicionar ao PATH
+# Linux: sudo apt install ffmpeg
+# macOS: brew install ffmpeg
+```
 
-## 🚀 Próximas funcionalidades
+## 📄 Logs e Debug
 
-- [ ] Suporte a múltiplos idiomas
-- [ ] Captura de frames em timestamps específicos
-- [ ] Exportação para diferentes formatos (SRT, VTT)
-- [ ] Interface web
-- [ ] API REST
+O aplicativo gera logs detalhados visíveis na interface. Para debug avançado:
 
-## 📄 Licença
+```bash
+# Build com debug habilitado
+python build.py --debug --test
 
-MIT License - veja o arquivo LICENSE para detalhes.
+# Executar com logs no console
+python app.py
+```
 
-## 🤝 Contribuição
+## 🏗️ Desenvolvimento
 
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
+### Configurar Ambiente
+```bash
+# Clonar e configurar
+git clone [repository-url]
+cd video-transpile
+python -m venv transpile
+source transpile/bin/activate  # ou transpile\Scripts\activate no Windows
+pip install -r requirements.txt
+```
+
+### Testar Mudanças
+```bash
+# Build de desenvolvimento
+python build.py --build-type onedir --debug --test
+
+# Ou usar wrapper
+./build_quick.sh development
+```
+
+### Contribuir
+1. Fork o projeto
+2. Crie uma branch para sua feature
+3. Teste com `build_quick.sh development`
+4. Faça commit das mudanças
 5. Abra um Pull Request
 
----
+## 📝 Licença
 
-**Desenvolvido para facilitar a transcrição de vídeos e criação de conteúdo otimizado para blogs e SEO.**
+[Adicionar informações de licença]
 
-<<<<<<< HEAD
-pyinstaller --onefile --noconsole --add-data "C:\workspace\lab\video-transpile\transpile\lib\site-packages\whisper\assets;whisper/assets" --add-binary "C:\workspace\lab\video-transpile\transpile\lib\site-packages\torch\lib\*.dll;torch/lib" app.py
-=======
->>>>>>> 2e4e59f22522816f35fd222356147b60de4a09b1
+## 🤝 Suporte
+
+Para problemas e sugestões, abra uma issue no repositório.
