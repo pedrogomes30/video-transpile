@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 openai-whisper
 moviepy
 python-docx
@@ -5,3 +6,29 @@ opencv-python
 transformers
 ffmpeg-python
 requests
+=======
+# Versões compatíveis com Python 3.8+ e CUDA
+openai-whisper==20231117
+moviepy==1.0.3
+python-docx==0.8.11
+opencv-python==4.8.1.78
+transformers==4.21.3
+ffmpeg-python==0.2.0
+torch==1.13.1+cu117
+torchvision==0.14.1+cu117
+tiktoken==0.4.0
+regex==2023.8.8
+numpy==1.24.4
+huggingface-hub==0.16.4
+pyinstaller==5.13.2
+
+# Dependências adicionais identificadas durante build
+altgraph==0.17.4
+pefile>=2022.5.30
+pywin32-ctypes>=0.2.1
+pyinstaller-hooks-contrib>=2025.8
+packaging>=22.0
+
+# Para instalar PyTorch com CUDA, use:
+# pip install torch==1.13.1+cu117 torchvision==0.14.1+cu117 --extra-index-url https://download.pytorch.org/whl/cu117
+>>>>>>> 97265ce0a4e234e2ef96a2bae8fdabdb046cbb5e
