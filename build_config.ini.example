@@ -1,0 +1,72 @@
+# Configurações Personalizadas de Build
+# Copie este arquivo para build_config.ini para usar configurações personalizadas
+
+[build]
+# Nome do aplicativo (sem extensão)
+app_name = VideoTranscriber
+
+# Habilitar janela de console (útil para debug)
+console_mode = false
+
+# Modo debug (mais informações de erro)
+debug_mode = false
+
+# Caminho para ícone do executável (.ico no Windows, .icns no macOS)
+# Deixe vazio para não usar ícone
+icon_path = 
+
+# Compressão UPX (reduz tamanho do executável)
+upx_compression = true
+
+# Módulos adicionais para excluir (reduz tamanho)
+# Separados por vírgula
+exclude_modules = matplotlib,pandas,scipy,pytest,setuptools
+
+[advanced]
+# Configurações avançadas - apenas para usuários experientes
+
+# Adicionar dados extras ao executável
+# Formato: origem:destino
+# extra_datas = assets:assets,config:config
+
+# Binários adicionais
+# extra_binaries = 
+
+# Imports ocultos adicionais
+# extra_hiddenimports = 
+
+# Hooks personalizados
+# custom_hooks = 
+
+[packaging]
+# Configurações de empacotamento
+
+# Criar instalador (requer NSIS no Windows ou fpm no Linux)
+create_installer = false
+
+# Nome da empresa
+company_name = 
+
+# Versão do aplicativo  
+version = 1.0.0
+
+# Descrição do aplicativo
+description = Video Transcriber usando Whisper AI
+
+# Copyright
+copyright = 
+
+[optimization]
+# Otimizações de build
+
+# Remover símbolos de debug
+strip_symbols = false
+
+# Otimizar bytecode Python
+optimize_bytecode = 0
+
+# Usar arquivo único (pode ser mais lento para carregar)
+onefile = true
+
+# Comprimir arquivos de dados
+compress_data = true

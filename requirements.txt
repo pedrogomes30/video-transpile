@@ -3,3 +3,5 @@ moviepy
 python-docx
 opencv-python
 transformers
+ffmpeg-python
+requests

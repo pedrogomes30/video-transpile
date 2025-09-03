@@ -47,9 +47,25 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 4. Verificação da instalação
+### 4. Configure o FFmpeg (obrigatório)
 ```bash
+# Configuração automática
+python setup_ffmpeg.py
+
+# Ou instalação manual:
+# Windows: Baixe de https://ffmpeg.org e coloque ffmpeg.exe na pasta
+# Linux: sudo apt install ffmpeg
+# macOS: brew install ffmpeg
+```
+
+### 5. Verificação da instalação
+```bash
+# Diagnóstico completo do sistema
+python test_system.py
+
+# Verificações individuais
 python -c "import whisper; print('Whisper instalado com sucesso!')"
+ffmpeg -version
 ```
 
 ## 🎮 Como usar
@@ -82,21 +98,77 @@ poderia transformar essa transcrição em um artigo para blog? com titulo e tudo
 
 ## 🏗️ Build do executável
 
-### Instalação do PyInstaller
+### Método automático (recomendado)
+```bash
+python build.py
+```
+Este script automatizado irá:
+- ✅ Verificar e instalar dependências
+- ✅ Configurar o FFmpeg automaticamente
+- ✅ Limpar builds anteriores
+- ✅ Gerar o executável
+- ✅ Testar o executável
+- ✅ Criar documentação
+
+### Método manual
+
+#### 1. Instalação do PyInstaller
 ```bash
 pip install pyinstaller
 ```
 
-### Gerar executável
+#### 2. Preparar FFmpeg
+```bash
+# Instalar FFmpeg automaticamente
+python setup_ffmpeg.py
+
+# Ou instalar manualmente (veja seção de Solução de Problemas)
+```
+
+#### 3. Gerar executável
 ```bash
 pyinstaller app.spec
 ```
 
-O executável será criado na pasta `dist/` e incluirá automaticamente os assets necessários do Whisper.
+#### 4. Localização do executável
+- **Windows**: `dist/VideoTranscriber.exe`
+- **Linux/macOS**: `dist/VideoTranscriber`
 
-### Para gerar um novo spec file (se necessário):
+### Configuração avançada do build
+
+O arquivo `app.spec` é gerado automaticamente pelo `build.py` com as configurações otimizadas para seu sistema operacional.
+
+#### Configurações personalizadas:
+1. **Copie o arquivo de exemplo**:
+   ```bash
+   cp build_config.ini.example build_config.ini
+   ```
+
+2. **Edite as configurações** em `build_config.ini`:
+   - **Nome do executável**: `app_name = MeuTranscritor`
+   - **Modo console**: `console_mode = true` (para debug)
+   - **Ícone personalizado**: `icon_path = assets/icon.ico`
+   - **Compressão**: `upx_compression = false` (se houver problemas)
+
+3. **Execute o build**:
+   ```bash
+   python build.py
+   ```
+
+#### Exemplo de configuração personalizada:
+```ini
+[build]
+app_name = MeuVideoTranscritor
+console_mode = false
+debug_mode = false
+icon_path = assets/meu_icon.ico
+upx_compression = true
+```
+
+### Regenerar spec manualmente:
 ```bash
-pyinstaller --onefile --windowed --add-data "caminho/para/whisper/assets:whisper/assets" app.py
+# Gerar apenas o spec sem fazer build
+python -c "from build import generate_spec_file; generate_spec_file()"
 ```
 
 ## 📁 Estrutura do projeto
@@ -104,9 +176,15 @@ pyinstaller --onefile --windowed --add-data "caminho/para/whisper/assets:whisper
 ```
 video-transpile/
 ├── app.py                          # Ponto de entrada da aplicação
-├── app.spec                        # Configuração do PyInstaller
+├── build.py                        # Script de build automático (gera app.spec)
+├── build_config.ini.example        # Exemplo de configurações de build
+├── setup_ffmpeg.py                 # Configuração automática do FFmpeg
+├── test_system.py                  # Diagnóstico e teste do sistema
+├── config.ini                      # Arquivo de configuração da aplicação
 ├── requirements.txt                 # Dependências do projeto
 ├── readme.md                       # Documentação
+├── .gitignore                      # Arquivos ignorados pelo Git
+├── ffmpeg.exe                      # FFmpeg (Windows - após setup)
 ├── controller/                     # Controladores
 │   └── transcribe_controller.py    # Lógica de controle da transcrição
 ├── service/                        # Serviços
@@ -114,6 +192,12 @@ video-transpile/
 │   └── frame_capture_service.py    # Serviço de captura de frames (futuro)
 ├── view/                          # Interface gráfica
 │   └── main_view.py               # Interface principal
+├── dist/                          # Executáveis (após build)
+│   ├── VideoTranscriber.exe       # Executável principal
+│   └── LEIA-ME.txt                # Instruções do executável
+├── build/                         # Arquivos temporários do build
+├── app.spec                       # Configuração do PyInstaller (gerado)
+├── build_config.ini               # Configurações personalizadas (opcional)
 └── output/                        # Pasta de saída (criada automaticamente)
 ```
 
@@ -122,10 +206,44 @@ video-transpile/
 - **openai-whisper**: Motor de transcrição de IA
 - **moviepy**: Processamento de vídeo
 - **opencv-python**: Manipulação de imagens e vídeo
+- **ffmpeg-python**: Interface Python para FFmpeg
 - **tkinter**: Interface gráfica (incluído no Python)
 - **transformers**: Modelos de IA (dependência do Whisper)
+- **pathlib**: Manipulação de caminhos (incluído no Python 3.4+)
 
 ## ⚠️ Solução de problemas
+
+### Erro de FFmpeg (UnboundLocalError)
+**Problema**: `local variable 'ffmpeg' referenced before assignment`
+
+**Soluções**:
+1. **Instalação automática do FFmpeg**:
+   ```bash
+   python setup_ffmpeg.py
+   ```
+
+2. **Instalação manual do FFmpeg**:
+   
+   **Windows**:
+   - Baixe o FFmpeg de: https://ffmpeg.org/download.html
+   - Extraia o arquivo e coloque `ffmpeg.exe` na pasta do projeto
+   - Ou adicione o FFmpeg ao PATH do sistema
+
+   **Linux**:
+   ```bash
+   sudo apt update
+   sudo apt install ffmpeg
+   ```
+
+   **macOS**:
+   ```bash
+   brew install ffmpeg
+   ```
+
+3. **Verificação**:
+   ```bash
+   ffmpeg -version
+   ```
 
 ### Erro de modelo não encontrado
 ```bash
@@ -148,6 +266,11 @@ brew install ffmpeg
 - Use vídeos menores (< 1GB) para melhor performance
 - Feche outros programas durante a transcrição
 - O modelo "small" é usado por padrão para otimizar o uso de memória
+
+### Problemas no executável (.exe)
+- **Antivírus**: Adicione o executável à lista de exceções
+- **Permissões**: Execute como administrador se necessário
+- **Assets**: Certifique-se de que os assets do Whisper estão incluídos no build
 
 ## 🚀 Próximas funcionalidades
 
